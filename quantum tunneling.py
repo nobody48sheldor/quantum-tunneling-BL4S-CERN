@@ -9,6 +9,7 @@ ax = fig.add_subplot(111, projection = '3d')
 
 
 
+a = int(input("render level "))
 l = float(input("lenght = "))
 r = float(input("size of potential barrer = "))
 V_o = float(input("V_o = "))
@@ -18,12 +19,17 @@ h_bar = h/(2*np.pi)
 m = 9.1093837015
 E = ((n**2)*(h**2))/(8*m*l**2)
 print("the total energy of the particle is ", E)
-q = l/2
+q = 5.2
 alpha = (np.sqrt(2*m*(V_o-E)))/h_bar
+print("alpha ", alpha)
+
 
 def delta(x):
-    s = (e**(-alpha*x))/(2*np.sin((n*np.pi/l)*x))
+    s = np.exp(-alpha*x)/((2*np.sin(((n*np.pi)/l)*x))**2)
     return(s)
+
+print("q d exp ", np.exp(-alpha*q), "q d sin^2 ", ((2*np.sin(((n*np.pi)/l)*q))**2))
+print("q+r d exp ", np.exp(-alpha*(q+r)), "q+r d sin^2 ", ((2*np.sin((n*np.pi/l)*(q+r)))**2))
 
 print("delta q ", delta(q))
 print("delta q+r ", delta(q+r))
@@ -38,11 +44,11 @@ c = np.sqrt(1/(delta(q)*(q-(l/(2*n*np.pi)*np.sin((2*n*np.pi/l)*q))) - (1/(2*alph
 
 
 
-xa = np.linspace(0, q, 400)
-xb = np.linspace(q, q+r, 400)
-xc = np.linspace(q+r, l, 400)
+xa = np.linspace(0, q, a)
+xb = np.linspace(q, q+r, a)
+xc = np.linspace(q+r, l, a)
 
-t = np.linspace(0, 40, 400)
+t = np.linspace(0, 40, a)
 
 x_a, t_ = np.meshgrid(xa, t)
 x_b, t_ = np.meshgrid(xb, t)
