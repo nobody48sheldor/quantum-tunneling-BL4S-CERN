@@ -18,13 +18,13 @@ V_o = float(input("V_o = "))*(1.6*(10**(-19)))
 alpha = (np.sqrt(2*m*(V_o-E)))/h_bar
 print("alpha ", alpha)
 
-tmax = float(input("tmax = "))*(10**(-6))
+tmax = int(input("tmax = "))*(10**(-15))
 
 xA = np.linspace(0, q, a)
 xB = np.linspace(q, (q+r), a)
 xC = np.linspace((q+r), l, a)
 
-t = np.linspace(0, tmax, a)
+t = np.linspace(0, tmax, int(b*(tmax*(10**(15)))))
 
 
 def delta(x):
@@ -35,6 +35,8 @@ def delta(x):
 B = np.sqrt(1/((2*((delta(q))**2)*(q - (l/(2*n*np.pi))*np.sin(((2*n*np.pi)/l)*q))) - (1/(2*alpha))*((np.exp(-alpha*(q+r)))-(np.exp(-alpha*q))) + (2*((delta(q+r))**2)*(l - q + r + (l/(2*n*np.pi))*np.sin(((2*n*np.pi)/l)*(q+r))))))
 A = 2*B*delta(q)
 C = 2*B*delta(q+r)
+
+yBoundaries = np.linspace(-(A + A/100), (A + A/100), 10)
 
 I = B**2*(((2*((delta(q))**2)*(q - (l/(2*n*np.pi))*np.sin(((2*n*np.pi)/l)*q))) - (1/(2*alpha))*((np.exp(-alpha*(q+r)))-(np.exp(-alpha*q))) + (2*((delta(q+r))**2)*(l - q + r + (l/(2*n*np.pi))*np.sin(((2*n*np.pi)/l)*(q+r))))))
 print("total integral = ", I)
@@ -94,7 +96,7 @@ plt.plot([], [])
 
 i = 0
 
-while i<a:
+while i<b:
     ar = AR(xA, t[i])
     ac = AC(xA, t[i])
 
@@ -104,18 +106,24 @@ while i<a:
     cr = CR(xC, t[i])
     cc = CC(xC, t[i])
 
-    print(t[i])
+    borderL = np.linspace(q, q, 10)
+    borderR = np.linspace((q+r), (q+r), 10)
+
 
     plt.clf()
+    plt.title(t[i])
     plt.plot(xA, ar, color = 'blue')
     plt.plot(xA, ac, color = 'green')
 
-    plt.plot(xB, br, color = 'blue')
-    plt.plot(xB, bc, color = 'green')
+    plt.plot(xB, br, color = 'red')
+    plt.plot(xB, bc, color = 'red')
 
     plt.plot(xC, cr, color = 'blue')
     plt.plot(xC, cc, color = 'green')
+
+    plt.plot(borderL, yBoundaries, color = 'red')
+    plt.plot(borderR, yBoundaries, color = 'red')
     plt.xlim([0, l])
-    plt.ylim([-(A + A/100), (A + A/100)])
-    plt.pause((1/(a*tmax*10**4)))
+    plt.ylim([(A + A/100), -(A + A/100)])
+    plt.pause((1/(b*tmax*10**16)))
     i = i + 1
